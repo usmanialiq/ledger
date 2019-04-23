@@ -1,0 +1,122 @@
+<!-- 
+    Author: Muhammad Usman Ali
+    Email: usmanialiq@gmail.com
+    Github: www.github.com/usmanialiq
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="author" content="Usman Ali">
+    <title>Billing Application - Ledger</title>
+
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+</head>
+<body>
+
+    <div class="d-flex" id="wrapper">
+    
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+
+                <div class="container">
+                    <div class="ledgerForm mt-5">
+                        <form action="/client/ledger" method="POST">
+                            <label>Client:</label>
+                            <select name="client_id" id="cltID">
+                                <% if(client) {%>
+                                    <option value="">Select Client...</option>
+                                    <% client.map( n => { %> 
+                                        <option><%= n.company %></option>
+                                    <% }) %>
+                                <% } %>
+                                <% if(!client) {%>
+                                    <option selected>Empty</option>
+                                <% } %>
+                            </select>
+                            <button type="submit" class="btn btn-success">Generate</button>
+                        </form>
+                    </div>
+                
+                    <div class="printTable">
+                        <h3 class="text-center my-4"><%= ledgerFor %></h3>
+                        <table class="table table-bordered mt-3">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">S. No</th>
+                                        <th scope="col">Date</th>
+                                        <th scope="col">Description</th>
+                                        <th scope="col">Credit</th>
+                                        <th scope="col">Debit</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    <% if(creditedData) { %>
+
+                                        <% creditedData.map( (item, index) => { %>
+                                            
+                                            <tr>
+                                                <td><%= index %></td>
+                                                <td><%= item.dateOf %></td>
+                                                <% if(item.id) { %>
+                                                    <td><%= item.id %> -> Invoice No# <%= item.inv %></td>    
+                                                <% } %>
+                                                <% if(item.pr_id) { %>
+                                                    <td>Payment# <%= item.pr_id %> -> <%= status %><%= item.c_name %>
+                                                        <% if(item.chq) {%>
+                                                            Against Cheque <%= item.chq%>
+                                                        <% } %>
+                                                        <% if(!item.chq) {%>
+                                                            Against Cash
+                                                        <% } %>
+                                                    </td>    
+                                                <% } %>
+                                                <td><%= item.credit %></td>
+                                                <td><%= item.debit %></td>
+                                            </tr>
+
+                                        <% }) %>
+
+                                        <tr>
+                                            <td class="hideCell"></td>
+                                            <td class="hideCell"></td>
+                                            <td class="hideCell"></td>
+                                            <td><b>Total</b></td>
+                                            <td><%= total %></td>
+                                        </tr>
+
+                                    <% } %>
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                    
+            </div>
+        
+        </div>
+        <!-- /#page-content-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+
+    <script src="/js/lib/jquery.js"></script>
+    <script src="/js/lib/bootstrap.js"></script>
+    <script src="/js/lib/popper.js"></script>
+
+</body>
+</html>
+
+
+<!-- 
+    Author: Muhammad Usman Ali
+    Email: usmanialiq@gmail.com
+    Github: www.github.com/usmanialiq
+-->
